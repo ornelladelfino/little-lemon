@@ -7,12 +7,12 @@ import Footer from './Footer';
 
 function App() {
   return (
-    <>
-    <Header />
-    <Nav />
-    <Main />
-    <Footer />
-  </>
+    <div className="grid-container">
+    <div className='grid-item header'><Header /></div>
+    <div className='grid-item nav'><Nav /></div>
+    <div className='grid-item main'><Main /></div>
+    <div className='grid-item footer'><Footer /></div>
+  </div>
   );
 }
 
