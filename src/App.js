@@ -8,6 +8,7 @@ import About from './pages/About';
 import Testimonies from './pages/Testimonies';
 import Orders from './pages/Orders';
 import Bookings from './pages/Bookings';
+import ConfirmedBooking from './components/ConfirmedBooking';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/testimonies" element={<Testimonies />} />
           <Route path="/orders" element={<Orders />}/>
           <Route path="/bookings" element={<Bookings/>} />
+          <Route path="/booking-confirmed" element={<ConfirmedBooking />} />
           <Route path="/" element={() => (
             <div className='grid-item'><main>
               <h2>Home</h2>

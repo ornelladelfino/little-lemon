@@ -1,31 +1,74 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BookingForm from '../components/BookingForm';
+import { fetchData, submitAPI } from '../utils/api'; // Ensure submitAPI is imported
 
-const initializeTimes = () => {
-  return ["10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
+export const initializeTimes = async () => {
+  const today = new Date().toISOString().split('T')[0];
+  try {
+    const times = await fetchData(today);
+    return times;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
 };
 
-const updateTimes = (state, action) => {
-  // Here you can update the available times based on the selected date
-  // For now, it returns the same times regardless of the date
-  return state;
+export const updateTimes = async (state, action) => {
+  try {
+    const times = await fetchData(action.date);
+    return times;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return state;
+  }
 };
 
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
-  const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
+  const [availableTimes, dispatch] = useReducer((state, action) => {
+    switch (action.type) {
+      case 'initialize':
+        return action.times;
+      case 'update':
+        return action.times;
+      default:
+        return state;
+    }
+  }, []);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const initialize = async () => {
+      const times = await initializeTimes();
+      dispatch({ type: 'initialize', times });
+    };
+    initialize();
+  }, []);
 
   const addBooking = (booking) => {
     setBookings([...bookings, booking]);
+  };
+
+  const submitForm = async (formData) => {
+    const success = await submitAPI(formData);
+    if (success) {
+      navigate('/booking-confirmed');
+    } else {
+      // Handle submission failure (optional)
+      console.error('Form submission failed');
+    }
   };
 
   return (
     <main className="bookings">
       <h2>Bookings</h2>
       <BookingForm 
-        availableTimes={availableTimes}
+        availableTimes={availableTimes || []}
         setAvailableTimes={(date) => dispatch({ type: 'update', date })} 
-        addBooking={addBooking} 
+        addBooking={addBooking}
+        submitForm={submitForm}
       />
       <h3>Current Bookings</h3>
       <ul>
