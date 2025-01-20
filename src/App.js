@@ -16,6 +16,7 @@ const App = () => {
       <div className='grid-container'>
         <div className='grid-item'><Header /></div>
         <div className='grid-item'><Navigation /></div>
+        <main>
         <Routes>
           <Route path="/about" element={<About />}/>
           <Route path="/testimonies" element={<Testimonies />} />
@@ -23,12 +24,13 @@ const App = () => {
           <Route path="/bookings" element={<Bookings/>} />
           <Route path="/booking-confirmed" element={<ConfirmedBooking />} />
           <Route path="/" element={() => (
-            <div className='grid-item'><main>
+            <div className='grid-item'>
               <h2>Home</h2>
               <p>Welcome to our web app!</p>
-            </main></div>
+           </div>
           )} />
-        </Routes>
+        </Routes> 
+        </main>
         <div className='grid-item'><Footer /></div>
       </div>
     </Router>
